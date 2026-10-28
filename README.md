@@ -34,16 +34,13 @@ FleetOps gives operations teams one view of vehicles, drivers, trips, alerts, an
 
 - **Public preview during local development:** http://127.0.0.1:5173
 - **Deployed application URL:** [fleetmanage-alpha.vercel.app](https://fleetmanage-alpha.vercel.app/)
-- **Walkthrough/video:** Add a hosted walkthrough URL if one is produced.
+- **Short walkthrough:** [Watch FleetOps walkthrough](https://fleetmanage-alpha.vercel.app/fleetmanage.mp4)
+- **Walkthrough file:** [public/fleetmanage.mp4](./public/fleetmanage.mp4)
 
 ### Demo access
 
+For Supabase authentication, create a user with **Create Account** or enter an operator account registered in Supabase. 
 
-
-For Supabase authentication, create a user with **Create Account** or enter an operator account registered in Supabase. Project owners should provide any required deployed demo credentials separately.
-
-No fixed demo login credentials are bundled.
-> Never commit real passwords, Supabase service-role keys, OAuth secrets, or private API keys.
 
 ## Local Setup
 
@@ -281,7 +278,9 @@ Review performed:
 
 
 
-- Development chat export: `TODO — add shareable session/chat link`
-- Walkthrough/demo video: `TODO — add shareable walkthrough URL`
+- Development repository: [FleetOps on GitHub](https://github.com/Irin356/FleetOps)
+
+- Short walkthrough: [Watch FleetOps walkthrough](https://fleetmanage-alpha.vercel.app/fleetmanage.mp4)
+- Live demo application: [fleetmanage-alpha.vercel.app](https://fleetmanage-alpha.vercel.app/)
 
 
