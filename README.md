@@ -1,6 +1,6 @@
 # FleetOps
 
-A responsive fleet-management application and public product experience built with React + TypeScript, Vite ,Supabase Auth + Postgres.
+A responsive fleet-management application and public product experience built with React + TypeScript, Vite, Supabase Auth + Postgres.
 
 ## Project Overview
 
@@ -34,7 +34,7 @@ FleetOps gives operations teams one view of vehicles, drivers, trips, alerts, an
 
 - **Public preview during local development:** http://127.0.0.1:5173
 - **Deployed application URL:** 
-- **Walkthrough/video:** The supplied reference video is available at `public/fleetmanage.mp4`. Add a hosted walkthrough URL if one is produced.
+- **Walkthrough/video:** Add a hosted walkthrough URL if one is produced.
 
 ### Demo access
 
@@ -150,6 +150,105 @@ Before production use, narrow anonymous policies, add tenant/organization owners
 The seed migration adds ten drivers, vehicles, trips, ordered route points, and alerts. The frontend also contains matching local sample data in `src/data/mockFleetData.ts`.
 
 In demo mode, coordinates and speeds are simulated locally every four seconds. Supabase is not required for the public product preview.
+
+## Architecture and Data Flow
+
+```text
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                        FleetOps Application Workflow                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+                         ┌────────────────────────┐
+                         │       Browser          │
+                         │  React 19 + TypeScript │
+                         └───────────┬────────────┘
+                                     │
+                                     ▼
+                         ┌────────────────────────┐
+                         │   Public Landing Page  │
+                         │  Platform / Solutions  │
+                         │  Industries / Contact  │
+                         └───────┬───────────┬────┘
+                             ┌───────┘           └─────────┐
+                             ▼                             ▼
+                ┌─────────────────────┐       ┌─────────────────────┐
+                │  Demo Preview Path  │       │ Authentication Path │
+                │ Use local mock data │       │ Sign In / Sign Up   │
+                └──────────┬──────────┘       └──────────┬──────────┘
+                           │                             │
+                           │                 ┌───────────┴───────────┐
+                           │                 ▼                       ▼
+                           │       ┌───────────────────┐   ┌────────────────────┐
+                           │       │ Email / Password  │   │ Google OAuth       │
+                           │       │ Supabase Auth     │   │ Google → Supabase  │
+                           │       └─────────┬─────────┘   └─────────┬──────────┘
+                           │                 └───────────┬──────────┘
+                           │                             ▼
+                           │                 ┌─────────────────────┐
+                           │                 │ Authenticated User │
+                           │                 │ + Active Session   │
+                           │                 └──────────┬──────────┘
+                           │                            │
+                           └──────────────┬─────────────┘
+                                          ▼
+                         ┌────────────────────────────────┐
+                         │      Fleet Service Layer       │
+                         │ src/services/fleetService.ts   │
+                         │ Read data or send update action│
+                         └───────┬──────────────────┬─────┘
+                                 │                  │
+             ┌───────────────────┘                  └────────────────────┐
+             ▼                                                           ▼
+┌────────────────────────────┐                         ┌────────────────────────────┐
+│ Mock Fleet Data            │                         │ Supabase PostgreSQL        │
+│ src/data/mockFleetData.ts  │                         │ drivers                    │
+│ Local vehicles / trips     │                         │ vehicles                   │
+│ Local alerts / simulation  │                         │ trips / trip_points        │
+└──────────────┬─────────────┘                         │ vehicle_alerts             │
+               │                                       └──────────────┬─────────────┘
+               │                                                      │
+               └───────────────────────┬──────────────────────────────┘
+                                               ▼
+                               ┌─────────────────────────────┐
+                               │ React Application State     │
+                               │ Vehicles / Drivers / Trips  │
+                               │ Alerts / Selected Vehicle   │
+                               └───────────────┬─────────────┘
+                                               │
+                                               ▼
+                               ┌─────────────────────────────┐
+                               │ Fleet Operations Dashboard  │
+                               │ Overview / Map / Trips      │
+                               │ Vehicle Details / Alerts    │
+                               └───────────────┬─────────────┘
+                                               │
+                                               ▼
+                               ┌─────────────────────────────┐
+                               │ React Leaflet Map           │
+                               │ Markers → Status Filter     │
+                               │ Vehicle Route / Breadcrumbs │
+                               └───────────────┬─────────────┘
+                                               │
+                                               ▼
+                               ┌─────────────────────────────┐
+                               │ OpenStreetMap Tile Provider │
+                               └─────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ Update Loop                                                                  │
+│ Operator action → Fleet Service → Supabase or local state → Dashboard refresh │
+└──────────────────────────────────────────────────────────────────────────────┘```
+
+### Primary data flows
+
+1. **Public access:** The browser loads the landing page and can enter local demo mode without Supabase.
+2. **Authentication:** Email/password and Google OAuth requests are handled by Supabase Auth. Supabase returns a persistent browser session and user object.
+3. **Live fleet data:** React calls `src/services/fleetService.ts`, which reads and updates Supabase PostgreSQL tables through the browser Supabase client.
+4. **Data mapping:** Fleet service results are converted into typed vehicle, trip, alert, and route models in React state.
+5. **Dashboard rendering:** The overview, map, vehicle details, trip history, and alert queue render from the same centralized React fleet state.
+6. **Map rendering:** React Leaflet renders vehicle markers and ordered trip points; the underlying map tiles are supplied externally.
+7. **Demo rendering:** If the backend is absent or demo mode is selected, local sample records and simulated telemetry replace live Supabase data.
 
 ## Technical Decisions
 
