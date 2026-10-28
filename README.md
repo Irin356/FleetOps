@@ -33,7 +33,7 @@ FleetOps gives operations teams one view of vehicles, drivers, trips, alerts, an
 ## Live Demo
 
 - **Public preview during local development:** http://127.0.0.1:5173
-- **Deployed application URL:** 
+- **Deployed application URL:** [fleetmanage-alpha.vercel.app](https://fleetmanage-alpha.vercel.app/)
 - **Walkthrough/video:** Add a hosted walkthrough URL if one is produced.
 
 ### Demo access
