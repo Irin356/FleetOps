@@ -36,6 +36,7 @@ FleetOps gives operations teams one view of vehicles, drivers, trips, alerts, an
 - **Deployed application URL:** [fleetmanage-alpha.vercel.app](https://fleetmanage-alpha.vercel.app/)
 - **Short walkthrough:** [Watch FleetOps walkthrough](https://fleetmanage-alpha.vercel.app/fleetmanage.mp4)
 - **Walkthrough file:** [public/fleetmanage.mp4](./public/fleetmanage.mp4)
+- **Chat logs:** https://github.com/Irin356/fleet-manage-antigravity-chat-logs/blob/main/conversations/FleetOps/Fleetboard/Fleetboard.md
 
 ### Demo access
 
@@ -276,7 +277,7 @@ Review performed:
 
 ## Exported Chat and Walkthrough Links
 
-
+Chat logs link: https://github.com/Irin356/fleet-manage-antigravity-chat-logs/blob/main/conversations/FleetOps/Fleetboard/Fleetboard.md
 
 - Development repository: [FleetOps on GitHub](https://github.com/Irin356/FleetOps)
 
